@@ -31,6 +31,8 @@ SDL_Texture* ImageContainer::getImageTexture(int32_t rsrcId) const{
     if(it == textures_.end()){
         std::cerr << "Error, invalid rsrcId: " << rsrcId << " requested" << std::endl;
 
+        throw std::runtime_error("Not found.");
+
         return nullptr;
     }
 
@@ -61,6 +63,7 @@ int32_t ImageContainer::loadSingleResource(const ImageCfg& resources, [[maybe_un
     //TODO remove me
     //temporary enable alpha blending for all existing textures
     if(EXIT_SUCCESS != Texture::setBlendModeTexture(texture, BlendMode::BLEND)) {
+        throw std::runtime_error("Unable to set blend mode.");
         std::cerr << "setBlendModeTexture() failed for file: " << resources.location << std::endl;
         return EXIT_FAILURE;
     }

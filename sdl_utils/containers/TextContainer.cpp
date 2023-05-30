@@ -20,6 +20,8 @@ int32_t TextContainer::init(const TextContainerConfig& cfg){
         _fonts[key] = currFont;
     }
 
+    _textures.push_back(nullptr);
+
     return EXIT_SUCCESS;
 }
 
@@ -36,6 +38,7 @@ void TextContainer::createText(const std::string& text, const Color &color, int3
     auto it = _fonts.find(fontId);
 
     if(it == _fonts.end()){
+        throw std::invalid_argument("Font not found.");
         std::cerr << "could not be found. Will not create text: " << text << std::endl;
         return;
     }
@@ -45,6 +48,7 @@ void TextContainer::createText(const std::string& text, const Color &color, int3
 
     if(EXIT_SUCCESS != Texture::createTextureFromText(text, color, font, textTexture,
                                                       outTextWidth, outTextHeight)){
+        throw std::invalid_argument("CreateTextureFromText failed.");
         std::cerr << "Error, createTextureFromText() failed for text: " << text << std::endl;
         return;
     }
@@ -86,6 +90,10 @@ void TextContainer::unloadText(int32_t textId){
 }
 
 SDL_Texture* TextContainer::getTextTexture(int32_t textId) const {
+    if(textId < 0){
+        throw std::invalid_argument("Invalid text Id");
+    }
+
     if(0 > textId || textId >= static_cast<int32_t>(_textures.size())){
         std::cerr << "Error, trying to get non-existing textId: " << textId << std::endl;
         return nullptr;
@@ -104,6 +112,8 @@ void TextContainer::occupyFreeSlotIndex(int32_t& outIndex, SDL_Texture* texture)
             return;
         }
     }
+
+    throw std::invalid_argument("No free slots.");
 }
 
 void TextContainer::freeSlotIndex(int32_t index){

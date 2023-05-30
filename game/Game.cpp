@@ -97,9 +97,16 @@ void Game::handleEvent([[maybe_unused]]const InputEvent& e){
 
         case Keyboard::KEY_T:
             pressKeysImg.opacity -= 10;
+            if(pressKeysImg.opacity < 0){
+                pressKeysImg.opacity = 0;
+            }
             break;
         case Keyboard::KEY_Y:
             pressKeysImg.opacity += 10;
+
+            if(pressKeysImg.opacity > 255){
+                pressKeysImg.opacity = 255;
+            }
             break;
         case Keyboard::KEY_B:
             textContainer->createText("Kak ste, kolegi?", Colors::GREEN, gFontId, helloTest.textId,
