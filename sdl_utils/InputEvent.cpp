@@ -9,8 +9,7 @@ int32_t InputEvent::init(){
     sdl_event_ = new SDL_Event{};
 
     if(sdl_event_ == nullptr){
-        std::cerr << "Bad alloc for SDL_EVENT()" << std::endl;
-        return EXIT_FAILURE;
+        std::invalid_argument("Bad alloc for SDL_EVENT()");
     }
 
     return EXIT_SUCCESS;

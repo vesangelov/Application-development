@@ -10,8 +10,7 @@ int32_t ImageContainer::init(const ImageContainerConfig& cfg){
     for(const auto& [resId, element] : cfg.imageConfigs){
 
         if(EXIT_SUCCESS != loadSingleResource(element, resId)) {
-            std::cerr << "createSurfaceFromFile: " << element.location << std::endl;
-            return EXIT_FAILURE;
+            throw std::invalid_argument("createSurfaceFromFile: " + element.location);
         }
     }
 
@@ -32,8 +31,6 @@ SDL_Texture* ImageContainer::getImageTexture(int32_t rsrcId) const{
         std::cerr << "Error, invalid rsrcId: " << rsrcId << " requested" << std::endl;
 
         throw std::runtime_error("Not found.");
-
-        return nullptr;
     }
 
     return it->second;
@@ -56,16 +53,13 @@ int32_t ImageContainer::loadSingleResource(const ImageCfg& resources, [[maybe_un
     SDL_Texture* texture = nullptr;
 
     if(EXIT_SUCCESS != Texture::createTextureFromFile(resources.location, texture)) {
-        std::cerr << "createSurfaceFromFile: " << resources.location << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("createSurfaceFromFile: " + resources.location);
     }
 
     //TODO remove me
     //temporary enable alpha blending for all existing textures
     if(EXIT_SUCCESS != Texture::setBlendModeTexture(texture, BlendMode::BLEND)) {
         throw std::runtime_error("Unable to set blend mode.");
-        std::cerr << "setBlendModeTexture() failed for file: " << resources.location << std::endl;
-        return EXIT_FAILURE;
     }
 
     textures_[rsrcId] = texture;

@@ -19,34 +19,28 @@
 int32_t Engine::init(const EngineConfig& cfg){
 
     if(EXIT_SUCCESS != window_.init(cfg.windowCfg)){
-        std::cerr << "window.init() failed. Reason: " << SDL_GetError() << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("window.init() failed.");
     }
 
     if(EXIT_SUCCESS != renderer_.init(window_.getWindow())){
-        std::cerr << "Renderer.init() failed. Reason: " << SDL_GetError() << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("Renderer.init() failed.");
     }
 
     if(EXIT_SUCCESS != imageContainer_.init(cfg.imageContainerConfig)){
-        std::cerr << "imgContainer.init() failed. Reason: " << SDL_GetError() << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("imgContainer.init() failed.");
     }
 
     if(EXIT_SUCCESS != textContainer_.init(cfg.textContainerConfig)){
-        std::cerr << "textContainer.init() failed. Reason: " << SDL_GetError() << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("textContainer.init() failed.");
     }
 
     if(EXIT_SUCCESS != event_.init()){
-        std::cerr << "InputEvent.init() failed. Reason: " << SDL_GetError() << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("InputEvent.init() failed.");
     }
 
     if(EXIT_SUCCESS != game_.init(cfg.gameCfg, &imageContainer_,
                                   &textContainer_)){
-        std::cerr << "Game.init() failed. Reason: " << SDL_GetError() << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("Game.init() failed.");
     }
 
     return EXIT_SUCCESS;
@@ -79,9 +73,8 @@ void Engine::drawFrame(){
             texture = textContainer_.getTextTexture(image.textId);
         }
         else {
-            std::cerr << "Error, received unsupported WidgetType: " << static_cast<int32_t>(image.widgetType)
-                      << " for rsrcId: " << image.rsrcId << std::endl;
-            continue;
+            std::cout << static_cast<int32_t>(image.widgetType) << " error for rsrcIdL: " << image.rsrcId << " ";
+            throw std::invalid_argument("Received unsupported WidgetType.");
         }
 
         renderer_.renderTexture(texture, image);

@@ -16,8 +16,7 @@ static int32_t runApplication(){
     event.init();
 
     if(EXIT_SUCCESS != engine.init(EngineConfigLoader::loadConfig())){
-        std::cerr << "engine.init() failed" << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("engine.init() failed.");
     }
 
     engine.start();
@@ -30,13 +29,11 @@ static int32_t runApplication(){
 int32_t main([[maybe_unused]] int32_t argc, [[maybe_unused]] char* argv[]){
 
     if(EXIT_SUCCESS != SDLLoader::init()){
-        std::cerr << "SDL_Init() failed." << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("SDL_Init() failed.");
     }
 
     if(EXIT_SUCCESS != runApplication()){
-        std::cerr << "runApplication() failed" << std::endl;
-        return EXIT_FAILURE;
+        throw std::invalid_argument("runApplication() failed.");
     }
 
     SDLLoader::deinit();

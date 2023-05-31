@@ -13,9 +13,7 @@ int32_t Game::init(const GameCfg& cfg, const ImageContainer* imageContainerInter
                    TextContainer* textContainerInterface){
 
     if(nullptr == imageContainerInterface){
-            std::cerr << "Error, nullptr provided for imageContainerInterface" << std::endl;
-
-        return EXIT_FAILURE;
+        throw std::invalid_argument("Error, nullptr provided for imageContainerInterface");
     }
 
     imageContainer_ = imageContainerInterface;
@@ -23,9 +21,7 @@ int32_t Game::init(const GameCfg& cfg, const ImageContainer* imageContainerInter
     gFontId = cfg.textFontId;
 
     if(nullptr == textContainerInterface){
-        std::cerr << "Error, nullptr provided for textContainerInterface" << std::endl;
-
-        return EXIT_FAILURE;
+        throw std::invalid_argument("Error, nullptr provided for textContainerInterface");
     }
 
     textContainer = textContainerInterface;

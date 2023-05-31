@@ -13,8 +13,8 @@ int32_t TextContainer::init(const TextContainerConfig& cfg){
         currFont = TTF_OpenFont(fontCfg.location.c_str(), fontCfg.fontSize);
 
         if(currFont == nullptr){
-            std::cerr << "Error TTF_OpenFont for: for fontLocation: "
-            << fontCfg.location << ". Reason: " << SDL_GetError() << std::endl;
+            throw std::invalid_argument("Error TTF_OpenFont for: for fontLocation: " +
+            fontCfg.location + ". Reason: " + SDL_GetError());
         }
 
         _fonts[key] = currFont;
@@ -38,9 +38,7 @@ void TextContainer::createText(const std::string& text, const Color &color, int3
     auto it = _fonts.find(fontId);
 
     if(it == _fonts.end()){
-        throw std::invalid_argument("Font not found.");
-        std::cerr << "could not be found. Will not create text: " << text << std::endl;
-        return;
+        throw std::invalid_argument("Font not found." + text);
     }
 
     TTF_Font* font = it->second;
@@ -48,9 +46,7 @@ void TextContainer::createText(const std::string& text, const Color &color, int3
 
     if(EXIT_SUCCESS != Texture::createTextureFromText(text, color, font, textTexture,
                                                       outTextWidth, outTextHeight)){
-        throw std::invalid_argument("CreateTextureFromText failed.");
-        std::cerr << "Error, createTextureFromText() failed for text: " << text << std::endl;
-        return;
+        throw std::invalid_argument("Error, createTextureFromText() failed for text: " + text);
     }
 
     occupyFreeSlotIndex(outTextId, textTexture);
@@ -63,7 +59,7 @@ void TextContainer::reloadText(const std::string& text, const Color &color, int3
     auto it = _fonts.find(fontId);
 
     if(it == _fonts.end()){
-        std::cerr << "could not be found. Will not reload text: " << text << std::endl;
+        throw std::invalid_argument("Error, could not be found. Will not reload text: " + text);
         return;
     }
 
@@ -73,8 +69,7 @@ void TextContainer::reloadText(const std::string& text, const Color &color, int3
     SDL_Texture* textTexture = nullptr;
     if(EXIT_SUCCESS != Texture::createTextureFromText(text, color, font, textTexture,
                                                       outTextWidth, outTextHeight)){
-        std::cerr << "Error, createTextureFromText() failed for text: " << text << std::endl;
-        return;
+        throw std::invalid_argument("Error, createTextureFromText() failed for text: " + text);
     }
 
     _textures[textId] = textTexture;
@@ -82,8 +77,8 @@ void TextContainer::reloadText(const std::string& text, const Color &color, int3
 
 void TextContainer::unloadText(int32_t textId){
     if(0 > textId || textId >= static_cast<int32_t>(_textures.size())){
-        std::cerr << "Error, trying to unload non-existing textId: " << textId << std::endl;
-        return;
+        std::cout << textId;
+        throw std::invalid_argument(", trying to unload non-existing textId.");
     }
 
     freeSlotIndex(textId);
@@ -95,8 +90,8 @@ SDL_Texture* TextContainer::getTextTexture(int32_t textId) const {
     }
 
     if(0 > textId || textId >= static_cast<int32_t>(_textures.size())){
-        std::cerr << "Error, trying to get non-existing textId: " << textId << std::endl;
-        return nullptr;
+        std::cout << textId;
+        throw std::invalid_argument("trying to get non-existing textId.");
     }
 
     return _textures[textId];

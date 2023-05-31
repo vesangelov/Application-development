@@ -21,7 +21,8 @@ int32_t MonitorWindow::init(const MonitorWindowCfg& cfg){
     finalPos.y, cfg.windowWidth, cfg.windowHeight, cfg.windowFlags);
 
     if(window_ == nullptr){
-        std::cerr << "SDL_CreateWindow failed. Reason: " << SDL_GetError() << std::endl;
+        std::cout << SDL_GetError() << " reason. ";
+        throw std::invalid_argument("Bad alloc for SDL_EVENT()");
     }
 
     return EXIT_SUCCESS;
@@ -38,8 +39,8 @@ void MonitorWindow::deinit(){
 void MonitorWindow::updateWindowSurface(){
 
     if(EXIT_SUCCESS != SDL_UpdateWindowSurface(window_)){
-        std::cerr << "SDL_UpdateWindowSurface() failed. Reason: " << SDL_GetError() << std::endl;
-        return;
+        std::cout << SDL_GetError() << " reason. ";
+        throw std::invalid_argument("SDL_UpdateWindowSurface() failed.");
     }
 }
 
