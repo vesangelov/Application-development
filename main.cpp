@@ -37,6 +37,8 @@ int32_t main([[maybe_unused]] int32_t argc, [[maybe_unused]] char* argv[]){
     }
 
     SDLLoader::deinit();
+    
+    std::cout << "I successed to push the change." << std::endl;
 
     return EXIT_SUCCESS;
 }
