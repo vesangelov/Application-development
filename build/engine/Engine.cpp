@@ -8,7 +8,7 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_ttf.h>
 
-//#include "../../sdl_utils/Texture.h"
+#include "../../manager_utils/include/manager_utils/managers/DrawMgr.h"
 #include "../../utils/thread/ThreadUtils.h"
 #include "../../sdl_utils/time/Time.cpp"
 #include "../../sdl_utils/Texture.h"
@@ -18,12 +18,14 @@
 
 int32_t Engine::init(const EngineConfig& cfg){
 
-    if(EXIT_SUCCESS != window_.init(cfg.windowCfg)){
-        throw std::invalid_argument("window.init() failed.");
+    gDrawMgr = new DrawMgr();
+
+    if(gDrawMgr == nullptr){
+        throw std::invalid_argument("DrawMgr init() failed.");
     }
 
-    if(EXIT_SUCCESS != renderer_.init(window_.getWindow())){
-        throw std::invalid_argument("Renderer.init() failed.");
+    if(EXIT_SUCCESS != gDrawMgr->init(cfg.drawMgrCfg)){
+        throw std::invalid_argument("gDrawMgr->init() failed.");
     }
 
     if(EXIT_SUCCESS != imageContainer_.init(cfg.imageContainerConfig)){
@@ -52,12 +54,15 @@ void Engine::deinit(){
     event_.deinit();
     imageContainer_.deinit();
     textContainer_.deinit();
-    renderer_.deinit();
-    window_.deinit();
+
+    gDrawMgr->deinit();
+    delete gDrawMgr;
+    gDrawMgr = nullptr;
 }
 
 void Engine::drawFrame(){
-    renderer_.clearScreen();
+
+    gDrawMgr->clearScreen();
 
     std::vector<DrawParams> images;
     game_.draw(images);
@@ -77,10 +82,10 @@ void Engine::drawFrame(){
             throw std::invalid_argument("Received unsupported WidgetType.");
         }
 
-        renderer_.renderTexture(texture, image);
+        gDrawMgr->addDrawCmd(image, texture);
     }
 
-    renderer_.finishFrame();
+    gDrawMgr->finishFrame();
 }
 
 void Engine::start(){

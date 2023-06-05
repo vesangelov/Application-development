@@ -3,13 +3,13 @@
 
 #include <cstdint>
 
-#include "../../../sdl_utils/config/MonitorWindowCfg.h"
+#include "../../../manager_utils/include/manager_utils/cfg/DrawMgrCfg.h"
 #include "../../../sdl_utils/config/ImageContainerCfg.h"
 #include "../../../game/config/GameCfg.h"
 #include "../../../sdl_utils/config/TextContainerCfg.h"
 
 struct EngineConfig {
-    MonitorWindowCfg windowCfg;
+    DrawMgrCfg drawMgrCfg;
     ImageContainerConfig imageContainerConfig;
     GameCfg gameCfg;
     TextContainerConfig textContainerConfig;

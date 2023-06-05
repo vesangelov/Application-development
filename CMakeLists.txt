@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.1)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)
 
-project(text_and_colors LANGUAGES CXX)
+project(managers LANGUAGES CXX)
 
 #if(UNIX)
 #set(SDL2_image_name SDL2_image)
@@ -75,6 +75,12 @@ add_executable(
             ${_BASE_DIR}/utils/input/EventDefines.h
             ${_BASE_DIR}/utils/drawing/DrawParams.h
             ${_BASE_DIR}/common/CommonDefines.h
+
+            ${_BASE_DIR}/manager_utils/include/manager_utils/managers/MgrBase.h
+            ${_BASE_DIR}/manager_utils/include/manager_utils/cfg/DrawMgrCfg.h
+
+            ${_BASE_DIR}/manager_utils/include/manager_utils/managers/DrawMgr.h
+            ${_BASE_DIR}/manager_utils/src/managers/DrawMgr.cpp
 
             ${_BASE_DIR}/main.cpp)
 

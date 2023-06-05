@@ -13,6 +13,8 @@ namespace {
     constexpr auto LAYER_2_IMG_HEIGHT = 150;
 
     constexpr auto ANGELINE_VINTAGE_40_FONT_SIZE = 40;
+
+    constexpr auto MAX_FRAMERATE = 30;
 }
 
 static void populateMonitorConfig(MonitorWindowCfg& cfg){
@@ -20,6 +22,11 @@ static void populateMonitorConfig(MonitorWindowCfg& cfg){
     cfg.windowWidth = WINDOW_WIDTH;
     cfg.windowHeight = WINDOW_HEIGTH;
     cfg.windowFlags = WINDOW_SHOWN;
+}
+
+static void populateDrawMgrConfig(DrawMgrCfg& cfg){
+    populateMonitorConfig(cfg.windowCfg);
+    cfg.maxFrameRate = MAX_FRAMERATE;
 }
 
 static void populateGameConfig(GameCfg& cfg){
@@ -53,7 +60,7 @@ static void populateTextContainerConfig(TextContainerConfig& cfg){
 EngineConfig EngineConfigLoader::loadConfig(){
     EngineConfig cfg;
 
-    populateMonitorConfig(cfg.windowCfg);
+    populateDrawMgrConfig(cfg.drawMgrCfg);
     populateImageContainerConfig(cfg.imageContainerConfig);
     populateGameConfig(cfg.gameCfg);
     populateTextContainerConfig(cfg.textContainerConfig);

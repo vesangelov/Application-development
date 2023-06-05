@@ -3,10 +3,8 @@
 
 #include <cstdint>
 
-#include "../../sdl_utils/MonitorWindow.h"
 #include "../../sdl_utils/InputEvent.h"
 #include "../../game/Game.h"
-#include "../../sdl_utils/Renderer.h"
 #include "../../sdl_utils/containers/ImageContainer.h"
 #include "../../sdl_utils/containers/TextContainer.h"
 
@@ -27,11 +25,9 @@ private:
 
     void limitFPS(const int64_t elapsedTimeMicroSeconds);
 
-    MonitorWindow window_;
     InputEvent event_;
     ImageContainer imageContainer_;
     Game game_;
-    Renderer renderer_;
     TextContainer textContainer_;
 };
 
