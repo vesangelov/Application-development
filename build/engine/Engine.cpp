@@ -9,6 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "../../manager_utils/include/manager_utils/managers/DrawMgr.h"
+#include "../../manager_utils/include/manager_utils/managers/ResMgr.h"
 #include "../../utils/thread/ThreadUtils.h"
 #include "../../sdl_utils/time/Time.cpp"
 #include "../../sdl_utils/Texture.h"
@@ -28,20 +29,21 @@ int32_t Engine::init(const EngineConfig& cfg){
         throw std::invalid_argument("gDrawMgr->init() failed.");
     }
 
-    if(EXIT_SUCCESS != imageContainer_.init(cfg.imageContainerConfig)){
-        throw std::invalid_argument("imgContainer.init() failed.");
+    gResMgr = new ResMgr();
+
+    if(gResMgr == nullptr){
+        throw std::invalid_argument("DrawMgr init() failed.");
     }
 
-    if(EXIT_SUCCESS != textContainer_.init(cfg.textContainerConfig)){
-        throw std::invalid_argument("textContainer.init() failed.");
+    if(EXIT_SUCCESS != gResMgr->init(cfg.resMgrCfg)){
+        throw std::invalid_argument("gDrawMgr->init() failed.");
     }
 
     if(EXIT_SUCCESS != event_.init()){
         throw std::invalid_argument("InputEvent.init() failed.");
     }
 
-    if(EXIT_SUCCESS != game_.init(cfg.gameCfg, &imageContainer_,
-                                  &textContainer_)){
+    if(EXIT_SUCCESS != game_.init(cfg.gameCfg)){
         throw std::invalid_argument("Game.init() failed.");
     }
 
@@ -52,8 +54,10 @@ void Engine::deinit(){
 
     game_.deinit();
     event_.deinit();
-    imageContainer_.deinit();
-    textContainer_.deinit();
+
+    gResMgr->deinit();
+    delete gResMgr;
+    gResMgr = nullptr;
 
     gDrawMgr->deinit();
     delete gDrawMgr;
@@ -72,10 +76,10 @@ void Engine::drawFrame(){
     for(const DrawParams& image : images){
 
         if(WidgetType::IMAGE == image.widgetType){
-            texture = imageContainer_.getImageTexture(image.rsrcId);
+            texture = gResMgr->getImageTexture(image.rsrcId);
         }
         else if(WidgetType::TEXT == image.widgetType){
-            texture = textContainer_.getTextTexture(image.textId);
+            texture = gResMgr->getTextTexture(image.textId);
         }
         else {
             std::cout << static_cast<int32_t>(image.widgetType) << " error for rsrcIdL: " << image.rsrcId << " ";

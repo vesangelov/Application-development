@@ -17,25 +17,6 @@ namespace {
     constexpr auto MAX_FRAMERATE = 30;
 }
 
-static void populateMonitorConfig(MonitorWindowCfg& cfg){
-    cfg.windowName = WINDOW_NAME;
-    cfg.windowWidth = WINDOW_WIDTH;
-    cfg.windowHeight = WINDOW_HEIGTH;
-    cfg.windowFlags = WINDOW_SHOWN;
-}
-
-static void populateDrawMgrConfig(DrawMgrCfg& cfg){
-    populateMonitorConfig(cfg.windowCfg);
-    cfg.maxFrameRate = MAX_FRAMERATE;
-}
-
-static void populateGameConfig(GameCfg& cfg){
-    cfg.layer2RsrcId = TextureID::LAYER_2;
-    cfg.pressKeysRsrcId = TextureID::PRESS_KEYS;
-
-    cfg.textFontId = FontId::ANGELINE_VINTAGE_40;
-}
-
 static void populateImageContainerConfig(ImageContainerConfig& cfg) {
     ImageCfg imageCfg;
     imageCfg.location = "../resources/pictures/layer_2.png";
@@ -57,13 +38,37 @@ static void populateTextContainerConfig(TextContainerConfig& cfg){
     cfg.fontConfigs.insert(std::make_pair(FontId::ANGELINE_VINTAGE_40, fontCfg));
 }
 
+static void populateMonitorConfig(MonitorWindowCfg& cfg){
+    cfg.windowName = WINDOW_NAME;
+    cfg.windowWidth = WINDOW_WIDTH;
+    cfg.windowHeight = WINDOW_HEIGTH;
+    cfg.windowFlags = WINDOW_SHOWN;
+}
+
+static void populateResMgrConfig(ResMgrCfg& cfg){
+    populateImageContainerConfig(cfg.imageContainerCfg);
+    populateTextContainerConfig(cfg.textContainerCfg);
+}
+
+static void populateDrawMgrConfig(DrawMgrCfg& cfg){
+    populateMonitorConfig(cfg.windowCfg);
+    cfg.maxFrameRate = MAX_FRAMERATE;
+}
+
+static void populateGameConfig(GameCfg& cfg){
+    cfg.layer2RsrcId = TextureID::LAYER_2;
+    cfg.pressKeysRsrcId = TextureID::PRESS_KEYS;
+
+    cfg.textFontId = FontId::ANGELINE_VINTAGE_40;
+}
+
+
 EngineConfig EngineConfigLoader::loadConfig(){
     EngineConfig cfg;
 
     populateDrawMgrConfig(cfg.drawMgrCfg);
-    populateImageContainerConfig(cfg.imageContainerConfig);
+    populateResMgrConfig(cfg.resMgrCfg);
     populateGameConfig(cfg.gameCfg);
-    populateTextContainerConfig(cfg.textContainerConfig);
 
     return cfg;
 }

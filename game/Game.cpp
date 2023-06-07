@@ -6,41 +6,28 @@
 #include "../sdl_utils/containers/ImageContainer.h"
 #include "../sdl_utils/containers/TextContainer.h"
 #include "../utils/drawing/Color.h"
+#include "../manager_utils/include/manager_utils/managers/DrawMgr.h"
+#include "../manager_utils/include/manager_utils/managers/ResMgr.h"
 
 static int32_t gFontId;
 
-int32_t Game::init(const GameCfg& cfg, const ImageContainer* imageContainerInterface,
-                   TextContainer* textContainerInterface){
-
-    if(nullptr == imageContainerInterface){
-        throw std::invalid_argument("Error, nullptr provided for imageContainerInterface");
-    }
-
-    imageContainer_ = imageContainerInterface;
-
-    gFontId = cfg.textFontId;
-
-    if(nullptr == textContainerInterface){
-        throw std::invalid_argument("Error, nullptr provided for textContainerInterface");
-    }
-
-    textContainer = textContainerInterface;
+int32_t Game::init(const GameCfg& cfg){
 
     layer2Img.rsrcId = cfg.layer2RsrcId;
-    Rectangle rect = imageContainer_->getImageFrame(layer2Img.rsrcId);
+    Rectangle rect = gResMgr->getImageFrame(layer2Img.rsrcId);
     layer2Img.width = rect.w;
     layer2Img.height = rect.h;
     layer2Img.pos = Point::ZERO;
     layer2Img.widgetType = WidgetType::IMAGE;
 
     pressKeysImg.rsrcId = cfg.pressKeysRsrcId;
-    rect = imageContainer_->getImageFrame(pressKeysImg.rsrcId);
+    rect = gResMgr->getImageFrame(pressKeysImg.rsrcId);
     pressKeysImg.width = rect.w;
     pressKeysImg.height = rect.h;
     pressKeysImg.pos = Point::ZERO;
     pressKeysImg.widgetType = WidgetType::IMAGE;
 
-    textContainer->createText("Hello C++ dudes", Colors::ORANGE, cfg.textFontId, helloTest.textId,
+    gResMgr->createText("Hello C++ dudes", Colors::ORANGE, cfg.textFontId, helloTest.textId,
     helloTest.width, helloTest.height);
 
     helloTest.pos = Point::ZERO;
@@ -50,7 +37,7 @@ int32_t Game::init(const GameCfg& cfg, const ImageContainer* imageContainerInter
 }
 
 void Game::deinit(){
-    textContainer->unloadText(helloTest.textId);
+    gResMgr->unloadText(helloTest.textId);
 }
 
 void Game::draw(std::vector<DrawParams>& outImage){
@@ -105,7 +92,7 @@ void Game::handleEvent([[maybe_unused]]const InputEvent& e){
             }
             break;
         case Keyboard::KEY_B:
-            textContainer->createText("Kak ste, kolegi?", Colors::GREEN, gFontId, helloTest.textId,
+            gResMgr->createText("Kak ste, kolegi?", Colors::GREEN, gFontId, helloTest.textId,
                                       helloTest.width, helloTest.height);
             break;
 

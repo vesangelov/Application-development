@@ -26,9 +26,7 @@ private:
     void limitFPS(const int64_t elapsedTimeMicroSeconds);
 
     InputEvent event_;
-    ImageContainer imageContainer_;
     Game game_;
-    TextContainer textContainer_;
 };
 
 #endif /*_ENGINE_ENGINE_H_*/

@@ -13,9 +13,6 @@ struct Color;
 
 class TextContainer {
 public:
-    int32_t init(const TextContainerConfig& cfg);
-
-    void deinit();
 
     void createText(const std::string& text, const Color &color, int32_t fontId,
                     int32_t &outTextId, int32_t &outTextWidth,
@@ -29,6 +26,10 @@ public:
 
     SDL_Texture* getTextTexture(int32_t textId) const;
 
+protected:
+    int32_t init(const TextContainerConfig& cfg);
+
+    void deinit();
 
 private:
     void occupyFreeSlotIndex(int32_t& outIndex, SDL_Texture* texture);

@@ -76,11 +76,16 @@ add_executable(
             ${_BASE_DIR}/utils/drawing/DrawParams.h
             ${_BASE_DIR}/common/CommonDefines.h
 
+            #Include managers
             ${_BASE_DIR}/manager_utils/include/manager_utils/managers/MgrBase.h
             ${_BASE_DIR}/manager_utils/include/manager_utils/cfg/DrawMgrCfg.h
+            ${_BASE_DIR}/manager_utils/include/manager_utils/cfg/ResMgrCfg.h
 
             ${_BASE_DIR}/manager_utils/include/manager_utils/managers/DrawMgr.h
             ${_BASE_DIR}/manager_utils/src/managers/DrawMgr.cpp
+
+            ${_BASE_DIR}/manager_utils/include/manager_utils/managers/ResMgr.h
+            ${_BASE_DIR}/manager_utils/src/managers/ResMgr.cpp
 
             ${_BASE_DIR}/main.cpp)
 
