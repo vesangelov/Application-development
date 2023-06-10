@@ -1,6 +1,12 @@
 #ifndef TEXT_AND_COLORS_MGRBASE_H
 #define TEXT_AND_COLORS_MGRBASE_H
 
+enum {
+    DRAW_MGR_IDX,
+    RSRC_MGR_IDX,
+    MANAGERS_COUNT
+};
+
 class MgrBase {
 public:
     MgrBase() = default;

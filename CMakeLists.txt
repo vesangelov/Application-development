@@ -74,18 +74,32 @@ add_executable(
 
             ${_BASE_DIR}/utils/input/EventDefines.h
             ${_BASE_DIR}/utils/drawing/DrawParams.h
+            ${_BASE_DIR}/utils/drawing/DrawParams.cpp
             ${_BASE_DIR}/common/CommonDefines.h
 
             #Include managers
             ${_BASE_DIR}/manager_utils/include/manager_utils/managers/MgrBase.h
             ${_BASE_DIR}/manager_utils/include/manager_utils/cfg/DrawMgrCfg.h
             ${_BASE_DIR}/manager_utils/include/manager_utils/cfg/ResMgrCfg.h
+            ${_BASE_DIR}/manager_utils/include/manager_utils/cfg/MgrHandlerCfg.h
 
             ${_BASE_DIR}/manager_utils/include/manager_utils/managers/DrawMgr.h
             ${_BASE_DIR}/manager_utils/src/managers/DrawMgr.cpp
 
             ${_BASE_DIR}/manager_utils/include/manager_utils/managers/ResMgr.h
             ${_BASE_DIR}/manager_utils/src/managers/ResMgr.cpp
+
+            ${_BASE_DIR}/manager_utils/include/manager_utils/managers/MgrHandler.h
+            ${_BASE_DIR}/manager_utils/src/managers/MgrHandler.cpp
+
+            ${_BASE_DIR}/manager_utils/include/manager_utils/drawing/Widget.h
+            ${_BASE_DIR}/manager_utils/src/drawing/Widget.cpp
+
+            ${_BASE_DIR}/manager_utils/include/manager_utils/drawing/Image.h
+            ${_BASE_DIR}/manager_utils/src/drawing/Image.cpp
+
+            ${_BASE_DIR}/manager_utils/include/manager_utils/drawing/Text.h
+            ${_BASE_DIR}/manager_utils/src/drawing/Text.cpp
 
             ${_BASE_DIR}/main.cpp)
 

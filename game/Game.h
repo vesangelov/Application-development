@@ -2,25 +2,29 @@
 #define INPUT_EVENTS_GAME_H
 
 #include <cstdint>
-#include <vector>
 
 #include "../game/config/GameCfg.h"
 #include "../utils/drawing/DrawParams.h"
+#include "../manager_utils/include/manager_utils/drawing/Image.h"
+#include "../manager_utils/include/manager_utils/drawing/Text.h"
+
 
 struct InputEvent;
-
 
 class Game {
 public:
     int32_t init(const GameCfg& cfg);
 
     void deinit();
-    void draw(std::vector<DrawParams>& outImage);
+    void draw();
     void handleEvent(const InputEvent& e);
 private:
-    DrawParams pressKeysImg;
-    DrawParams layer2Img;
-    DrawParams helloTest;
+    Image pressKeysImg;
+    Image layer2Img;
+    Text helloText;
+    Text pressText;
+    Text hideText;
+
 };
 
 

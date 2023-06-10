@@ -7,6 +7,7 @@
 #include "../../game/Game.h"
 #include "../../sdl_utils/containers/ImageContainer.h"
 #include "../../sdl_utils/containers/TextContainer.h"
+#include "../../manager_utils/include/manager_utils/managers/MgrHandler.h"
 
 struct SDL_Surface;
 struct EngineConfig;
@@ -25,6 +26,7 @@ private:
 
     void limitFPS(const int64_t elapsedTimeMicroSeconds);
 
+    MgrHandler mgrHandler_;
     InputEvent event_;
     Game game_;
 };

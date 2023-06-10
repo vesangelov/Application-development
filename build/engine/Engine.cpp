@@ -12,31 +12,13 @@
 #include "../../manager_utils/include/manager_utils/managers/ResMgr.h"
 #include "../../utils/thread/ThreadUtils.h"
 #include "../../sdl_utils/time/Time.cpp"
-#include "../../sdl_utils/Texture.h"
 #include "config/EngineConfig.h"
 
-#include "SDL2/SDL_surface.h"
 
 int32_t Engine::init(const EngineConfig& cfg){
 
-    gDrawMgr = new DrawMgr();
-
-    if(gDrawMgr == nullptr){
-        throw std::invalid_argument("DrawMgr init() failed.");
-    }
-
-    if(EXIT_SUCCESS != gDrawMgr->init(cfg.drawMgrCfg)){
-        throw std::invalid_argument("gDrawMgr->init() failed.");
-    }
-
-    gResMgr = new ResMgr();
-
-    if(gResMgr == nullptr){
-        throw std::invalid_argument("DrawMgr init() failed.");
-    }
-
-    if(EXIT_SUCCESS != gResMgr->init(cfg.resMgrCfg)){
-        throw std::invalid_argument("gDrawMgr->init() failed.");
+    if(EXIT_SUCCESS != mgrHandler_.init(cfg.mgrHandlerCfg)){
+        throw std::invalid_argument("InputEvent.init() failed.");
     }
 
     if(EXIT_SUCCESS != event_.init()){
@@ -54,40 +36,14 @@ void Engine::deinit(){
 
     game_.deinit();
     event_.deinit();
-
-    gResMgr->deinit();
-    delete gResMgr;
-    gResMgr = nullptr;
-
-    gDrawMgr->deinit();
-    delete gDrawMgr;
-    gDrawMgr = nullptr;
+    mgrHandler_.deinit();
 }
 
 void Engine::drawFrame(){
 
     gDrawMgr->clearScreen();
 
-    std::vector<DrawParams> images;
-    game_.draw(images);
-
-    SDL_Texture* texture = nullptr;
-
-    for(const DrawParams& image : images){
-
-        if(WidgetType::IMAGE == image.widgetType){
-            texture = gResMgr->getImageTexture(image.rsrcId);
-        }
-        else if(WidgetType::TEXT == image.widgetType){
-            texture = gResMgr->getTextTexture(image.textId);
-        }
-        else {
-            std::cout << static_cast<int32_t>(image.widgetType) << " error for rsrcIdL: " << image.rsrcId << " ";
-            throw std::invalid_argument("Received unsupported WidgetType.");
-        }
-
-        gDrawMgr->addDrawCmd(image, texture);
-    }
+    game_.draw();
 
     gDrawMgr->finishFrame();
 }

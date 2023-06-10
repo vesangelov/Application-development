@@ -6,44 +6,27 @@
 #include "../sdl_utils/containers/ImageContainer.h"
 #include "../sdl_utils/containers/TextContainer.h"
 #include "../utils/drawing/Color.h"
-#include "../manager_utils/include/manager_utils/managers/DrawMgr.h"
-#include "../manager_utils/include/manager_utils/managers/ResMgr.h"
-
-static int32_t gFontId;
 
 int32_t Game::init(const GameCfg& cfg){
 
-    layer2Img.rsrcId = cfg.layer2RsrcId;
-    Rectangle rect = gResMgr->getImageFrame(layer2Img.rsrcId);
-    layer2Img.width = rect.w;
-    layer2Img.height = rect.h;
-    layer2Img.pos = Point::ZERO;
-    layer2Img.widgetType = WidgetType::IMAGE;
-
-    pressKeysImg.rsrcId = cfg.pressKeysRsrcId;
-    rect = gResMgr->getImageFrame(pressKeysImg.rsrcId);
-    pressKeysImg.width = rect.w;
-    pressKeysImg.height = rect.h;
-    pressKeysImg.pos = Point::ZERO;
-    pressKeysImg.widgetType = WidgetType::IMAGE;
-
-    gResMgr->createText("Hello C++ dudes", Colors::ORANGE, cfg.textFontId, helloTest.textId,
-    helloTest.width, helloTest.height);
-
-    helloTest.pos = Point::ZERO;
-    helloTest.widgetType = WidgetType::TEXT;
+    //layer2Img.create(cfg.layer2RsrcId);
+    pressKeysImg.create(cfg.pressKeysRsrcId);
+    helloText.create("Hello, C++ dudes.", cfg.textFontId, Colors::GREEN);
+    pressText.create("Press text M", cfg.textFontId, Colors::BLUE);
+    hideText.create("Hide text N", cfg.textFontId, Colors::RED);
 
     return EXIT_SUCCESS;
 }
 
 void Game::deinit(){
-    gResMgr->unloadText(helloTest.textId);
+    helloText.destroy();
 }
 
-void Game::draw(std::vector<DrawParams>& outImage){
-    outImage.push_back(pressKeysImg);
-    outImage.push_back(layer2Img);
-    outImage.push_back(helloTest);
+void Game::draw(){
+
+    pressKeysImg.draw();
+    pressText.draw();
+    hideText.draw();
 }
 
 void Game::handleEvent([[maybe_unused]]const InputEvent& e){
@@ -53,47 +36,54 @@ void Game::handleEvent([[maybe_unused]]const InputEvent& e){
 
     switch (e.key){
         case Keyboard::KEY_UP:
-            pressKeysImg.pos.y -= 10;
+            pressKeysImg.moveUp(10);
             break;
         case Keyboard::KEY_DOWN:
-            pressKeysImg.pos.y += 10;
+            pressKeysImg.moveDown(10);
             break;
         case Keyboard::KEY_LEFT:
-            pressKeysImg.pos.x -= 10;
+            pressKeysImg.moveLeft(10);
             break;
         case Keyboard::KEY_RIGHT:
-            pressKeysImg.pos.x += 10;
+            pressKeysImg.moveRight(10);
             break;
 
         case Keyboard::KEY_Q:
-            pressKeysImg.width -= 10;
+            pressKeysImg.setWidth(pressKeysImg.getWidth() - 10);
             break;
         case Keyboard::KEY_W:
-            pressKeysImg.width += 10;
+            pressKeysImg.setWidth(pressKeysImg.getWidth() + 10);
             break;
         case Keyboard::KEY_E:
-            pressKeysImg.height -= 10;
+            pressKeysImg.setHeight(pressKeysImg.getHeight() - 10);
             break;
         case Keyboard::KEY_R:
-            pressKeysImg.height += 10;
+            pressKeysImg.setHeight(pressKeysImg.getHeight() + 10);
             break;
 
         case Keyboard::KEY_T:
-            pressKeysImg.opacity -= 10;
-            if(pressKeysImg.opacity < 0){
-                pressKeysImg.opacity = 0;
+            pressKeysImg.setOpacity(pressKeysImg.getOpacity() - 10);
+            if(pressKeysImg.getOpacity() < 0){
+                pressKeysImg.setOpacity(0);
             }
             break;
         case Keyboard::KEY_Y:
-            pressKeysImg.opacity += 10;
+            pressKeysImg.setOpacity(pressKeysImg.getOpacity() + 10);
 
-            if(pressKeysImg.opacity > 255){
-                pressKeysImg.opacity = 255;
+            if(pressKeysImg.getOpacity() > 255){
+                pressKeysImg.setOpacity(255);
             }
             break;
         case Keyboard::KEY_B:
-            gResMgr->createText("Kak ste, kolegi?", Colors::GREEN, gFontId, helloTest.textId,
-                                      helloTest.width, helloTest.height);
+            helloText.setText("Kak ste kolegi?");
+            break;
+        case Keyboard::KEY_M:
+            hideText.show();
+            pressText.hide();
+            break;
+        case Keyboard::KEY_N:
+            hideText.hide();
+            pressText.show();
             break;
 
         default:

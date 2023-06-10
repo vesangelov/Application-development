@@ -21,6 +21,8 @@ int32_t TextContainer::init(const TextContainerConfig& cfg){
     }
 
     _textures.push_back(nullptr);
+    _textures.push_back(nullptr);
+    _textures.push_back(nullptr);
 
     return EXIT_SUCCESS;
 }

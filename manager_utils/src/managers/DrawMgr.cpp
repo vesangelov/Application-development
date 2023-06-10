@@ -1,4 +1,5 @@
 #include "../../include/manager_utils/managers/DrawMgr.h"
+#include "../../include/manager_utils/managers/ResMgr.h"
 #include "../../include/manager_utils/cfg/DrawMgrCfg.h"
 
 #include <iostream>
@@ -36,6 +37,37 @@ void DrawMgr::finishFrame() {
 }
 
 
-void DrawMgr::addDrawCmd(const DrawParams &drawParams, SDL_Texture* texture) {
+void DrawMgr::addDrawCmd(const DrawParams &drawParams) {
+    SDL_Texture* texture = getTextureInternal(drawParams);
     renderer_.renderTexture(texture, drawParams);
+}
+
+SDL_Texture* DrawMgr::getTextureInternal(const DrawParams &drawParams) const {
+
+    if(WidgetType::IMAGE == drawParams.widgetType){
+        return gResMgr->getImageTexture(drawParams.rsrcId);
+    }
+    else if(WidgetType::TEXT == drawParams.widgetType){
+        return gResMgr->getTextTexture(drawParams.textId);
+    }
+    else {
+        std::cout << static_cast<int32_t>(drawParams.widgetType) << " error for rsrcIdL: " << drawParams.rsrcId << " ";
+        throw std::invalid_argument("Received unsupported WidgetType.");
+    }
+
+    return nullptr;
+}
+
+void DrawMgr::setWidgetBlendMode(const DrawParams &drawParams, BlendMode blendMode) {
+    SDL_Texture* texture = getTextureInternal(drawParams);
+    renderer_.setWidgetBlendMode(texture, blendMode);
+}
+void DrawMgr::setWidgetOpacity(const DrawParams &drawParams, int32_t opacity){
+
+    if(drawParams.widgetType == WidgetType::IMAGE){
+        return;
+    }
+
+    SDL_Texture* texture = getTextureInternal(drawParams);
+    renderer_.setWidgetOpacity(texture, opacity);
 }

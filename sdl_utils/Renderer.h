@@ -25,6 +25,8 @@ public:
     void clearScreen();
     void finishFrame();
     void renderTexture(SDL_Texture* texture, const DrawParams& drawParams);
+    void setWidgetBlendMode(SDL_Texture* texture, BlendMode blendMode);
+    void setWidgetOpacity(SDL_Texture* texture, int32_t opacity);
 private:
     void drawImage(const DrawParams& drawParams, SDL_Texture *texture);
     void drawText(const DrawParams& drawParams, SDL_Texture *texture);
