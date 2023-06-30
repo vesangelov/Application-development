@@ -9,84 +9,32 @@
 
 int32_t Game::init(const GameCfg& cfg){
 
-    //layer2Img.create(cfg.layer2RsrcId);
-    pressKeysImg.create(cfg.pressKeysRsrcId);
-    helloText.create("Hello, C++ dudes.", cfg.textFontId, Colors::GREEN);
-    pressText.create("Press text M", cfg.textFontId, Colors::BLUE);
-    hideText.create("Hide text N", cfg.textFontId, Colors::RED);
+    if(EXIT_SUCCESS != hero_.init(cfg.runningGirlRsrcId)){
+        throw std::invalid_argument("hero.init failed()");
+    }
+
+    if(EXIT_SUCCESS != wheel_.init(cfg.wheelRsrcId)){
+        throw std::invalid_argument("wheel.init failed()");
+    }
 
     return EXIT_SUCCESS;
 }
 
 void Game::deinit(){
-    helloText.destroy();
+    hero_.deinit();
 }
 
 void Game::draw(){
-
-    pressKeysImg.draw();
-    pressText.draw();
-    hideText.draw();
+    wheel_.draw();
+    hero_.draw();
 }
 
 void Game::handleEvent([[maybe_unused]]const InputEvent& e){
+
+    hero_.handleEvent(e);
+    wheel_.handleEvent(e);
+
     if(TouchEvent::KEYBOARD_RELEASE != e.type){
         return;
-    }
-
-    switch (e.key){
-        case Keyboard::KEY_UP:
-            pressKeysImg.moveUp(10);
-            break;
-        case Keyboard::KEY_DOWN:
-            pressKeysImg.moveDown(10);
-            break;
-        case Keyboard::KEY_LEFT:
-            pressKeysImg.moveLeft(10);
-            break;
-        case Keyboard::KEY_RIGHT:
-            pressKeysImg.moveRight(10);
-            break;
-
-        case Keyboard::KEY_Q:
-            pressKeysImg.setWidth(pressKeysImg.getWidth() - 10);
-            break;
-        case Keyboard::KEY_W:
-            pressKeysImg.setWidth(pressKeysImg.getWidth() + 10);
-            break;
-        case Keyboard::KEY_E:
-            pressKeysImg.setHeight(pressKeysImg.getHeight() - 10);
-            break;
-        case Keyboard::KEY_R:
-            pressKeysImg.setHeight(pressKeysImg.getHeight() + 10);
-            break;
-
-        case Keyboard::KEY_T:
-            pressKeysImg.setOpacity(pressKeysImg.getOpacity() - 10);
-            if(pressKeysImg.getOpacity() < 0){
-                pressKeysImg.setOpacity(0);
-            }
-            break;
-        case Keyboard::KEY_Y:
-            pressKeysImg.setOpacity(pressKeysImg.getOpacity() + 10);
-
-            if(pressKeysImg.getOpacity() > 255){
-                pressKeysImg.setOpacity(255);
-            }
-            break;
-        case Keyboard::KEY_B:
-            helloText.setText("Kak ste kolegi?");
-            break;
-        case Keyboard::KEY_M:
-            hideText.show();
-            pressText.hide();
-            break;
-        case Keyboard::KEY_N:
-            hideText.hide();
-            pressText.show();
-            break;
-
-        default:
-            break;
     }
 }

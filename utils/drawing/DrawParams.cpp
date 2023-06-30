@@ -3,6 +3,10 @@
 void DrawParams::reset() {
     pos = Point::UNDEFINED;
 
+    frameRect = Rectangle::ZERO;
+
+    rotationAngle = 0.0;
+
     width = 0;
     height = 0;
 
@@ -11,4 +15,5 @@ void DrawParams::reset() {
     rsrcId = INVALID_RSRC_ID;
 
     widgetType = WidgetType::UNKNOWN;
+    flipType = WidgetFlip::NONE;
 }

@@ -11,11 +11,21 @@ public:
 
     void reset();
 
+    void setFlipType(WidgetFlip flipType);
+
     void setWidth(int32_t width);
     void setHeight(int32_t height);
 
     int32_t getWidth() const;
     int32_t getHeight() const;
+
+    void setRotation(double angle);
+    double getRotation();
+
+    void setRotationCenter(const Point& pos);
+
+    void rotateRight(double delta);
+    void rotateLeft(double delta);
 
     void setPosition(const Point& pos);
     void setPosition(int32_t x, int32_t y);

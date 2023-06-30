@@ -2,15 +2,16 @@
 #include "../../common/CommonDefines.h"
 
 namespace {
-    constexpr auto WINDOW_WIDTH = 800;
-    constexpr auto WINDOW_HEIGTH = 680;
+    constexpr auto WINDOW_WIDTH = 1024;
+    constexpr auto WINDOW_HEIGTH = 800;
     constexpr auto WINDOW_NAME = "Scale and alpha blending";
 
-    constexpr auto PRESS_KEYS_WIDTH = 640;
-    constexpr auto PRESS_KEYS_HEIGHT = 480;
+    constexpr auto RUNNING_GIRL_FRAMES = 6;
+    constexpr auto RUNNING_GIRL_KEYS_WIDTH = 256;
+    constexpr auto RUNNING_GIRL_KEYS_HEIGHT = 220;
 
-    constexpr auto LAYER_2_IMG_WIDTH = 150;
-    constexpr auto LAYER_2_IMG_HEIGHT = 150;
+    constexpr auto WHEEL_IMG_WIDTH = 695;
+    constexpr auto WHEEL_IMG_HEIGHT = 695;
 
     constexpr auto ANGELINE_VINTAGE_40_FONT_SIZE = 40;
 
@@ -19,15 +20,26 @@ namespace {
 
 static void populateImageContainerConfig(ImageContainerConfig& cfg) {
     ImageCfg imageCfg;
-    imageCfg.location = "../resources/pictures/layer_2.png";
-    imageCfg.width = LAYER_2_IMG_WIDTH;
-    imageCfg.height = LAYER_2_IMG_HEIGHT;
-    cfg.imageConfigs.insert(std::make_pair(TextureID::LAYER_2, imageCfg));
+    imageCfg.location = "../resources/sprites/running_girl_small.png";
+    for (auto i = 0; i < RUNNING_GIRL_FRAMES; ++i) {
+        imageCfg.frames.emplace_back(i * RUNNING_GIRL_KEYS_WIDTH, //x
+                                     0, //y
+                                     RUNNING_GIRL_KEYS_WIDTH, //width
+                                     RUNNING_GIRL_KEYS_HEIGHT); //height
+    }
 
-    imageCfg.location = "../resources/pictures/press_keys.png";
-    imageCfg.width = PRESS_KEYS_WIDTH;
-    imageCfg.height = PRESS_KEYS_HEIGHT;
-    cfg.imageConfigs.insert(std::make_pair(TextureID::PRESS_KEYS, imageCfg));
+    cfg.imageConfigs.emplace(TextureID::RUNNING_GIRL, imageCfg);
+    imageCfg.frames.clear();
+
+    imageCfg.location = "../resources/sprites/wheel.png";
+    //Calculating position of the running girl
+    imageCfg.frames.emplace_back(0, //x
+                                 0, //y
+                                 WHEEL_IMG_WIDTH, //width
+                                 WHEEL_IMG_HEIGHT); //height
+
+    cfg.imageConfigs.emplace(TextureID::WHEEL, imageCfg);
+    imageCfg.frames.clear();
 }
 
 static void populateTextContainerConfig(TextContainerConfig& cfg){
@@ -61,8 +73,8 @@ static void populateMgrHandlerCfgConfig(MgrHandlerCfg& cfg){
 }
 
 static void populateGameConfig(GameCfg& cfg){
-    cfg.layer2RsrcId = TextureID::LAYER_2;
-    cfg.pressKeysRsrcId = TextureID::PRESS_KEYS;
+    cfg.runningGirlRsrcId = TextureID::RUNNING_GIRL;
+    cfg.wheelRsrcId = TextureID::WHEEL;
 
     cfg.textFontId = FontId::ANGELINE_VINTAGE_40;
 }

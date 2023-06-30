@@ -64,13 +64,9 @@ void Renderer::renderTexture(SDL_Texture* texture, const DrawParams& drawParams)
 }
 
 void Renderer::drawImage(const DrawParams& drawParams, SDL_Texture *texture){
-    const SDL_Rect destRec = { .x = drawParams.pos.x, .y = drawParams.pos.y,
-            .w = drawParams.width, .h = drawParams.height};
-
-    int32_t error = EXIT_SUCCESS;
 
     if(FULL_OPACITY == drawParams.opacity){
-        error = SDL_RenderCopy(sdlRenderer_, texture, nullptr, &destRec);
+        drawTextureInternal(drawParams, texture);
     }
     else {
         if(EXIT_SUCCESS != Texture::setAlphaTexture(texture, drawParams.opacity)){
@@ -78,11 +74,24 @@ void Renderer::drawImage(const DrawParams& drawParams, SDL_Texture *texture){
         }
     }
 
-    error = SDL_RenderCopy(sdlRenderer_, texture, nullptr, &destRec);
+    drawTextureInternal(drawParams, texture);
 
     if(EXIT_SUCCESS != Texture::setAlphaTexture(texture, drawParams.opacity)){
         std::cerr << "Texture::setAlphaTexture() failed for resource Id: " << drawParams.rsrcId << std::endl;
     }
+}
+
+void Renderer::drawTextureInternal(const DrawParams& drawParams, SDL_Texture *texture){
+    const SDL_Rect destRec = { .x = drawParams.pos.x, .y = drawParams.pos.y,
+            .w = drawParams.width, .h = drawParams.height};
+
+    const SDL_Rect* sourceRect = reinterpret_cast<const SDL_Rect*>(&drawParams.frameRect);
+
+    const SDL_Point* center = reinterpret_cast<const SDL_Point*>(&drawParams.rotationCenter);
+
+    const int32_t error =  SDL_RenderCopyEx(sdlRenderer_, texture, sourceRect, &destRec,
+                                            drawParams.rotationAngle, center,
+                                            static_cast<SDL_RendererFlip>(drawParams.flipType));
 
     if(EXIT_SUCCESS != error){
         std::cerr << "SDL_RenderCopy(() failed for resource Id: "
@@ -91,15 +100,7 @@ void Renderer::drawImage(const DrawParams& drawParams, SDL_Texture *texture){
 }
 
 void Renderer::drawText(const DrawParams& drawParams, SDL_Texture *texture){
-    const SDL_Rect destRec = { .x = drawParams.pos.x, .y = drawParams.pos.y,
-            .w = drawParams.width, .h = drawParams.height};
-
-    const int32_t error =  SDL_RenderCopy(sdlRenderer_, texture, nullptr, &destRec);
-
-    if(EXIT_SUCCESS != error){
-        std::cerr << "SDL_RenderCopy(() failed for resource Id: "
-                  << drawParams.rsrcId << "Reason: " << SDL_GetError() << std::endl;
-    }
+    drawTextureInternal(drawParams, texture);
 }
 
 void Renderer::setWidgetBlendMode(SDL_Texture* texture, BlendMode blendMode){

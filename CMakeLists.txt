@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.1)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)
 
-project(managers LANGUAGES CXX)
+project(animations LANGUAGES CXX)
 
 #if(UNIX)
 #set(SDL2_image_name SDL2_image)
@@ -63,6 +63,12 @@ add_executable(
             ${_BASE_DIR}/game/Game.h
             ${_BASE_DIR}/game/Game.cpp
             ${_BASE_DIR}/game/config/GameCfg.h
+
+            ${_BASE_DIR}/game/entities/Hero.h
+            ${_BASE_DIR}/game/entities/Hero.cpp
+
+            ${_BASE_DIR}/game/entities/Wheel.h
+            ${_BASE_DIR}/game/entities/Wheel.cpp
 
             ${_BASE_DIR}/build/engine/config/EngineConfig.h
             ${_BASE_DIR}/build/engine/EngineConfigLoader.h

@@ -35,8 +35,8 @@ int32_t Engine::init(const EngineConfig& cfg){
 void Engine::deinit(){
 
     game_.deinit();
-    event_.deinit();
     mgrHandler_.deinit();
+    event_.deinit();
 }
 
 void Engine::drawFrame(){

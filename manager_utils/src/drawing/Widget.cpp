@@ -16,6 +16,30 @@ void Widget::reset(){
     _drawParams.reset();
 }
 
+void Widget::setRotation(double angle){
+    _drawParams.rotationAngle = angle;
+}
+
+double Widget::getRotation(){
+    return _drawParams.rotationAngle;
+}
+
+void Widget::rotateRight(double delta){
+    _drawParams.rotationAngle += delta;
+}
+
+void Widget::rotateLeft(double delta){
+    _drawParams.rotationAngle -= delta;
+}
+
+void Widget::setRotationCenter(const Point& pos){
+    _drawParams.rotationCenter = pos;
+}
+
+void Widget::setFlipType(WidgetFlip flipType){
+    _drawParams.flipType = flipType;
+}
+
 void Widget::setWidth(int32_t width){
     _drawParams.width = width;
 }

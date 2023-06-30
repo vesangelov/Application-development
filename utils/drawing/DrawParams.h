@@ -4,10 +4,18 @@
 #include <cstdint>
 
 #include "Point.h"
+#include "../../sdl_utils/MonitorWindow.h"
 
 inline constexpr auto INVALID_RSRC_ID = -1;
 inline constexpr int32_t FULL_OPACITY = 255;
 inline constexpr int32_t ZERO_OPACITY = 0;
+
+enum class WidgetFlip : uint8_t {
+    NONE,
+    HORIZONTAL,
+    VERTICAL,
+    HORIZONTAL_AND_VERTICAL
+};
 
 enum class WidgetType : uint8_t {
     IMAGE,
@@ -27,6 +35,10 @@ struct DrawParams {
     //Top left position of texture
     Point pos = Point::UNDEFINED;
 
+    double rotationAngle = 0.0;
+    Point rotationCenter = Point::ZERO;
+
+    Rectangle frameRect = Rectangle::ZERO;
     //Draw dimensions of the texture
     int32_t width = 0;
     int32_t height = 0;
@@ -40,6 +52,7 @@ struct DrawParams {
     };
 
     WidgetType widgetType = WidgetType::UNKNOWN;
+    WidgetFlip flipType;
 
 };
 

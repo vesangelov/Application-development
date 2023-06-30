@@ -4,11 +4,13 @@
 #include <cstdint>
 #include <string>
 #include <unordered_map>
+#include <vector>
+
+struct Rectangle;
 
 struct ImageCfg {
     std::string location;
-    int32_t width = 0;
-    int32_t height = 0;
+    std::vector<Rectangle> frames;
 };
 
 struct ImageContainerConfig {

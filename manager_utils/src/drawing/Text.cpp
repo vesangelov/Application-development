@@ -20,6 +20,10 @@ void Text::create(const std::string& text,  int32_t fontId,
     gResMgr->createText(text, color, fontId, _drawParams.rsrcId,
                         _drawParams.width, _drawParams.height);
 
+    _drawParams.frameRect.x = 0;
+    _drawParams.frameRect.y = 0;
+    _drawParams.width = _drawParams.width;
+    _drawParams.height = _drawParams.height;
     _drawParams.pos = pos;
     _drawParams.widgetType = WidgetType::TEXT;
 

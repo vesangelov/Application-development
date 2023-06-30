@@ -11,8 +11,4 @@ struct ResMgrCfg {
     TextContainerConfig textContainerCfg;
 };
 
-
-
-
-
 #endif //TEXT_AND_COLORS_RESMGRCFG_H

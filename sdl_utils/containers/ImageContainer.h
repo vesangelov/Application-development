@@ -10,12 +10,14 @@
 
 struct SDL_Texture;
 
+using Frames = std::vector<Rectangle>;
+
 class ImageContainer {
 public:
 
     SDL_Texture* getImageTexture(int32_t rsrcId) const;
 
-    Rectangle getImageFrame(int32_t rsrcId) const;
+    const Frames& getImageFrame(int32_t rsrcId) const;
 
 protected:
     int32_t init(const ImageContainerConfig& cfg);
@@ -27,7 +29,7 @@ private:
     //the textures we'll be drawing
     std::unordered_map<int32_t, SDL_Texture*> textures_;
 
-    std::unordered_map<int32_t, Rectangle> _textureFrames;
+    std::unordered_map<int32_t, Frames> _textureFrames;
 
     int setBlendModeTexture(SDL_Texture *pTexture, BlendMode mode);
 };
